@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DevOps Task Manager</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+    <div class="app-container">
+
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="brand">
+                <span class="brand-mark" aria-hidden="true"></span>
+                <h2>TaskFlow</h2>
+            </div>
+
+            <nav aria-label="Main">
+                <a href="#" class="active" aria-current="page">Dashboard</a>
+                <a href="#">My tasks</a>
+                <a href="#">Completed</a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+
+            <header class="topbar">
+                <div>
+                    <h1>Dashboard</h1>
+                    <p class="topbar-sub">Track what's open and what's shipped.</p>
+                </div>
+                <button id="add-task-btn" type="button">
+                    <svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true">
+                        <path d="M7 1v12M1 7h12" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/>
+                    </svg>
+                    Add task
+                </button>
+            </header>
+
+            <section class="stats" aria-label="Task summary">
+                <div class="stat">
+                    <h3>Total tasks</h3>
+                    <p id="total-tasks">0</p>
+                </div>
+
+                <div class="stat">
+                    <h3>Completed</h3>
+                    <p id="completed-tasks">0</p>
+                </div>
+
+                <div class="stat">
+                    <h3>Pending</h3>
+                    <p id="pending-tasks">0</p>
+                </div>
+            </section>
+
+            <section class="task-section">
+                <div class="task-section-head">
+                    <h2>My tasks</h2>
+                </div>
+                <div id="task-list"></div>
+            </section>
+
+        </main>
+
+    </div>
+
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>

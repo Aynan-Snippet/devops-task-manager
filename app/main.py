@@ -1,11 +1,11 @@
-from flask import Flask
+from flask import Flask, render_template
 
 app = Flask(__name__)
 
 
 @app.route("/")
 def home():
-    return {"message": "DevOps Task Manager API is running!"}
+    return render_template("index.html")
 
 
 @app.route("/health")
