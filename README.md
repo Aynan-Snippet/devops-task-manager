@@ -1,44 +1,65 @@
 # DevOps Task Manager
 
-A containerized Flask REST API deployed on Kubernetes, demonstrating practical DevOps workflows including CI automation, containerization, orchestration, health monitoring, and load testing.
+A containerized Task Management web application built with Flask, HTML, CSS, and JavaScript, supported by practical DevOps workflows including automated testing, Docker containerization, Kubernetes orchestration, health monitoring, and load testing.
 
 ## Project Overview
 
-The DevOps Task Manager is a simple Flask-based API built to demonstrate how DevOps tools and practices work together in a real-world application workflow.
+DevOps Task Manager is a web-based task management application designed to demonstrate the complete journey from application development to deployment and infrastructure management.
 
-The project covers the journey from application development to containerization, automated testing, Kubernetes deployment, and performance testing.
+The application currently provides an interactive dashboard where users can create, organize, complete, and delete tasks.
+
+The frontend uses browser `localStorage` to persist tasks. Backend REST API and PostgreSQL integration are planned for upcoming development stages.
+
+Alongside application development, this project demonstrates how DevOps tools and practices can automate testing, package applications, deploy containers, monitor resources, and evaluate performance.
+
+## Application Features
+
+- Interactive TaskFlow dashboard.
+- Create and delete tasks.
+- Mark tasks as completed or pending.
+- Organize tasks by category.
+- Assign optional due dates.
+- Dashboard statistics for total, completed, and pending tasks.
+- Browser localStorage for task persistence.
+- Responsive frontend design.
 
 ## Architecture
 
 ```text
-             Developer
-                 |
-                 v
-              GitHub
-                 |
-                 v
-          GitHub Actions
+              Developer
+                  |
+                  v
+               GitHub
+                  |
+                  v
+           GitHub Actions
              (CI Tests)
-                 |
-                 v
-           Docker Image
-                 |
-                 v
-             Minikube
-            Kubernetes
-                 |
-          +------+------+
-          |             |
-          v             v
-       Pod 1          Pod 2
-          |             |
-          +------+------+
-                 |
-                 v
-          Kubernetes Service
-                 |
-                 v
-             Flask API
+                  |
+                  v
+            Docker Image
+                  |
+                  v
+              Minikube
+             Kubernetes
+                  |
+           +------+------+
+           |             |
+           v             v
+         Pod 1         Pod 2
+           |             |
+           +------+------+
+                  |
+                  v
+        Kubernetes Service
+                  |
+                  v
+             Flask App
+                  |
+           +------+------+
+           |             |
+           v             v
+        HTML/CSS       JavaScript
+        Frontend       Task Logic
 ```
 
 ## Technologies Used
@@ -46,7 +67,10 @@ The project covers the journey from application development to containerization,
 | Technology | Purpose |
 |---|---|
 | Python | Application development |
-| Flask | REST API framework |
+| Flask | Backend web framework |
+| HTML | Frontend structure |
+| CSS | Frontend styling |
+| JavaScript | Task interactions and localStorage |
 | Pytest | Automated testing |
 | Git & GitHub | Version control |
 | GitHub Actions | Continuous Integration |
@@ -57,11 +81,11 @@ The project covers the journey from application development to containerization,
 | k6 | Load testing |
 | Ubuntu WSL2 | Development environment |
 
-## Application Endpoints
+## Application Routes
 
-| Endpoint | Description |
+| Route | Description |
 |---|---|
-| `/` | Returns API welcome message |
+| `/` | Serves the TaskFlow dashboard |
 | `/health` | Returns application health status |
 
 Example health response:
@@ -71,18 +95,6 @@ Example health response:
   "status": "healthy"
 }
 ```
-
-## Project Features
-
-- Flask REST API with two endpoints.
-- Automated unit testing using Pytest.
-- Docker image creation and containerization.
-- GitHub Actions workflow for automated testing.
-- Kubernetes Deployment with two replicas.
-- Kubernetes NodePort Service.
-- Readiness and liveness probes.
-- Pod and node resource monitoring using `kubectl top`.
-- Load testing using k6.
 
 ## Getting Started
 
@@ -107,17 +119,19 @@ pip install -r requirements.txt
 python app/main.py
 ```
 
-The API runs on:
+Open the application in your browser:
 
 ```text
-http://127.0.0.1:5000
+http://localhost:5000
 ```
 
-### 4. Run Unit Tests
+### 4. Run Automated Tests
 
 ```bash
-pytest -v
+python -m pytest -v
 ```
+
+The tests verify that the dashboard loads successfully and the health endpoint returns the expected response.
 
 ## Docker
 
@@ -133,11 +147,30 @@ Run the container:
 docker run -d -p 5000:5000 devops-task-manager:1.0
 ```
 
-Test the application:
+Test the health endpoint:
 
 ```bash
 curl http://127.0.0.1:5000/health
 ```
+
+## Continuous Integration
+
+The project uses GitHub Actions to automate application testing.
+
+The CI workflow:
+
+1. Checks out the repository.
+2. Sets up Python 3.10.
+3. Installs project dependencies.
+4. Runs automated tests using Pytest.
+
+Workflow configuration:
+
+```text
+.github/workflows/ci.yml
+```
+
+CI runs automatically when changes are pushed to the `main` branch or when a pull request targets `main`.
 
 ## Kubernetes Deployment
 
@@ -196,9 +229,11 @@ Monitor node resource usage:
 kubectl top nodes
 ```
 
+These commands help monitor CPU and memory consumption within the Kubernetes cluster.
+
 ## Load Testing
 
-The project uses k6 to simulate multiple virtual users and evaluate API performance.
+The project uses k6 to simulate multiple virtual users and evaluate application performance.
 
 Load test script:
 
@@ -237,7 +272,15 @@ Detailed results: [Load Test Documentation](docs/load-test-results.md)
 devops-task-manager/
 │
 ├── app/
-│   └── main.py
+│   ├── __init__.py
+│   ├── main.py
+│   ├── static/
+│   │   ├── css/
+│   │   │   └── style.css
+│   │   └── js/
+│   │       └── app.js
+│   └── templates/
+│       └── index.html
 │
 ├── tests/
 │   ├── test_main.py
@@ -265,11 +308,14 @@ devops-task-manager/
 
 ## Learning Outcomes
 
-Through this project, I gained practical experience with:
+Through this project, I have gained practical experience with:
 
-- Building and testing a Python application.
-- Writing and managing Docker images.
+- Building and testing a Python web application.
+- Developing an interactive frontend using HTML, CSS, and JavaScript.
+- Working with Flask to serve frontend pages and backend routes.
+- Managing source code using Git and GitHub.
 - Automating tests with GitHub Actions.
+- Building and managing Docker images.
 - Deploying applications using Kubernetes.
 - Understanding deployments, replicas, and services.
 - Configuring Kubernetes health probes.
@@ -278,10 +324,16 @@ Through this project, I gained practical experience with:
 
 ## Future Improvements
 
-- Automated Docker image publishing to GitHub Container Registry (GHCR).
-- Continuous Deployment (CD).
-- Cloud deployment using AWS.
-- Infrastructure as Code using Terraform.
+- Develop a complete Flask REST API.
+- Integrate PostgreSQL as the application database.
+- Replace browser localStorage with persistent backend storage.
+- Implement individual task detail pages.
+- Add file attachments to tasks.
+- Implement user authentication and authorization.
+- Automate Docker image publishing to GitHub Container Registry (GHCR).
+- Implement Continuous Deployment (CD).
+- Deploy the application using AWS.
+- Introduce Infrastructure as Code using Terraform.
 
 ## Author
 
@@ -290,3 +342,4 @@ Through this project, I gained practical experience with:
 GitHub: [Aynan-Snippet](https://github.com/Aynan-Snippet)
 
 Project Repository: [DevOps Task Manager](https://github.com/Aynan-Snippet/devops-task-manager)
+
